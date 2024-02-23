@@ -1,0 +1,87 @@
+syntax = "proto3";
+package de.mcc;
+
+service Assignment2 {
+  // Dummy Hello World Example
+  // This just returns (input + 1) in a bigger data type
+  rpc Dummy(DummyRequest) returns (DummyResponse);
+
+  // Stock Data
+  // Input is the "Tracker Name" of a Stock (i.e., just a random short string). The output is the "Ticker Price" of this Stock (i.e., a list of ints that denominate price in cents and their timestamp)
+  rpc StockTicker(StockTickerRequest) returns (StockTickerResponse);
+
+  // Weather Data
+  // Send it a location and two unix timestamps and it will return (fake) weather data at this location between the specified periods. It will generate a random value for every hour (3600s).
+  rpc WeatherInfo(WeatherRequest) returns (WeatherResponse);
+
+  // Zombie Apocalypse Simulator
+  // Input is the name of a person and its skills. The output is a detailed report of how well they might do in a zombie apocalypse
+  rpc ZombieApocalypseSimulator(ZombieApocalypseRequest) returns (ZombieApocalypseResponse);
+}
+
+message DummyRequest {
+  string auth = 1;
+  int32 input = 2;
+}
+
+message DummyResponse {
+  string auth = 1;
+  int64 output = 2;
+  string error_message = 3;
+}
+
+message StockTickerRequest {
+  string auth = 1;
+  string tickerName = 2;
+}
+
+message StockTickerSingleResponse {
+  int64 unixTimestamp = 1;
+  int64 priceCts = 2;
+}
+
+message StockTickerResponse {
+  repeated StockTickerSingleResponse prices = 1;
+  string error_message = 2;
+}
+
+message WeatherRequest {
+  string auth = 1;
+  double lat = 2;
+  double lon = 3;
+  int64 unixTimestampBeginning = 4;
+  int64 unixTimestampEnd = 5;
+}
+
+message WeatherSingleResponse {
+  int64 unixTimestamp = 1;
+  int64 tempDeg = 2;
+}
+
+message WeatherResponse {
+  repeated WeatherSingleResponse weather = 1;
+  string error_message = 2;
+}
+
+enum ZombieApocalypseAbility {
+  IMUNE_TO_BITES = 0;
+  FAST_RUNNER = 1;
+  IMPERSONATE_ZOMBIES = 2;
+  AWESOME_ZOMBIE_DANCE_MOVES = 3; // Dancing can give temporarily lift the spirits
+}
+
+message ZombieApocalypseRequest
+{
+  string auth = 1;
+  string name = 2;
+  repeated ZombieApocalypseAbility abilities = 3;
+  int32 strength = 4; // On a level of 1-10 only!
+}
+
+message ZombieApocalypseResponse {
+  int32 pointsTotal = 1;
+  int32 probabilityToSurviveOneYear = 2;
+  int32 probabilityToSurviveTwoYears = 3;
+  string evaluation = 4;
+  string error_message = 5;
+}

@@ -1,0 +1,78 @@
+syntax = "proto3";
+package de.mcc;
+
+service LocalComs{
+
+  rpc Dummy(DummyReq) returns (DummyRes);
+
+  rpc StockTicker(StockTickerReq) returns (StockTickerRes);
+
+  rpc WeatherInfo(WeatherReq) returns (WeatherRes);
+
+  rpc ZombieApocalypseSimulator(ZombieApocalypseReq) returns (ZombieApocalypseRes);
+}
+
+message DummyReq {
+  string auth = 1;
+  int32 input = 2;
+}
+
+message DummyRes {
+  string auth = 1;
+  int64 output = 2;
+  string error_message = 3;
+}
+
+message StockTickerReq {
+  string auth = 1;
+  string tickerName = 2;
+}
+
+message StockTickerSingleRes {
+  string data=1;
+}
+
+message StockTickerRes{
+  repeated StockTickerSingleRes data = 1;
+  string error_message = 2;
+}
+
+message WeatherReq {
+  string auth = 1;
+  double lat = 2;
+  double lon = 3;
+  int64 unixTimestampBeginning = 4;
+  int64 unixTimestampEnd = 5;
+}
+
+message WeatherSingleRes {
+  string data=1;
+}
+
+message WeatherRes {
+  repeated WeatherSingleRes weather = 1;
+  string error_message = 2;
+}
+
+enum ZombieApocalypseAbi {
+  IMUNE_TO_BITESL = 0;
+  FAST_RUNNERL = 1;
+  IMPERSONATE_ZOMBIESL = 2;
+  AWESOME_ZOMBIE_DANCE_MOVESL = 3;
+}
+
+message ZombieApocalypseReq
+{
+  string auth = 1;
+  string name = 2;
+  repeated ZombieApocalypseAbi abilities = 3;
+  int32 strength = 4;
+}
+
+message ZombieApocalypseRes {
+  int32 pointsTotal = 1;
+  int32 probabilityToSurviveOneYear = 2;
+  int32 probabilityToSurviveTwoYears = 3;
+  string evaluation = 4;
+  string error_message = 5;
+}
